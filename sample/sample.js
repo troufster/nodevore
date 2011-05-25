@@ -19,3 +19,16 @@ n.getAllGroups(function(err, data) {
 
   console.log(err, data);
 });
+
+n.getMentions(function(err, data) {
+  console.log(err, data);
+});
+
+n.createGroup({ 
+                name : 'grpname', 
+                kind : 'private',
+                description : 'grpdesc',
+                slug : 'grpslug'
+              }, function(err, data) {
+                   console.log(err, data);
+                });
