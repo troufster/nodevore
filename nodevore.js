@@ -317,9 +317,137 @@ Nodevore.prototype = {
     _conn().get('/groups/' + id + '/track', '', function(err, data) {
       return _errorOrData(err, data, callback);
     });
+  },
+
+  /**
+   * Mark all messages in a group as read
+   * @param {Number} id Group id
+   * @param {Function} callback Callback function
+   */ 
+  markGroupRead : function(id, callback) {
+    if(!id) {
+      return callback(_err('markGroupRead requires a group id'));
+    }
+
+    _conn().get('/groups/' + id + '/mark_read', '', function(err, data) {
+      return _errorOrData(err, data, callback);
+    });
+  },
+
+  /**
+  * Get detailed info on a topic
+  * @param {Number} id Topic id
+  * @param {Function} callback Callback function
+  */
+  getTopic : function(id, callback) {
+    if(!id) {
+      return callback(_err('getTopic requires a topic id'));
+    }
+
+    _conn().get('/topics/' + id, '', function(err, data) {
+      return _errorOrData(err, data, callback);
+    });
+  },
+  
+  /**
+   * Remove a topic 
+   * User must be creator of the topic or a group admin
+   * @param {Number} id Topic id
+   * @param {Function} callback Callback function
+   */
+  removeTopic : function(id, callback) {
+    if(!id) {
+      return callback(_err('removeTopic requires a topic id'));
+    }
+
+    _conn().get('/topics/' + id + '/delete', '', function(err, data) {
+      return _errorOrData(err, data, callback);
+    }); 
+  },
+
+  /**
+   * Edit a topic
+   * User must be creator of the topic or a group admin
+   * @param {Number} id Topic id
+   * @param {String} name New topic name
+   * @param {Function} callback Callback function
+   */ 
+  editTopic : function(id, name, callback) {
+    if(!id || !name) {
+      return callback(_err('editTopic requires a topic id and a new topic name'));
+    }
+
+    var request = 'name=' + name;
+
+    _conn().get('/topics/' + id + '/edit', request, function(err, data) {
+      return _errorOrData(err, data, callback);
+    }); 
+  },
+
+  /**
+   * Track or mute a topic
+   * @param {Number} id Topic id
+   * @param {Function} callback Callback function
+   */ 
+  trackTopic : function(id, callback) {
+    if(!id) {
+      return callback(_err('trackTopic requires a topic id'));
+    }
+
+    _conn().get('/topics/' + id + '/track', '', function(err, data) {
+      return _errorOrData(err, data, callback);
+    }); 
+  },
+
+  /**
+   * Mark all messages in a topic as read
+   * @param {Number} id Topic id
+   * @param {Function} callback Callback functions
+   */ 
+  markTopicRead : function(id, callback) {
+    if(!id) {
+      return callback(_err('markTopicRead requires a topic id'));
+    }
+
+    _conn().get('/topics/' + id + '/mark_read', '', function(err, data) {
+      return _errorOrData(err, data, callback);
+    }); 
+  },
+
+  /**
+   * Get latest messages in a topic
+   * @param {Number} id Topic id
+   * @param {Number} until Until id, use to paginate
+   * @param {Boolean} markread Mark as read, set to false to leave fetched messages unread
+   * @param {Function} callback Callback function
+   */ 
+  getTopicMessages : function(id, until, markread, callback) {
+    if(!id) {
+      return callback(_err('getTopicMessages requires a topic id'));
+    }
+
+    var request = ['until_id=', until || '', '&',
+                  'mark_read=', markread || ''].join('');
+  
+    _conn().get('/topics/' + id + '/messages', request, function(err, data) {
+      return _errorOrData(err, data, callback);
+    });
+  },
+
+  createMessage : function(id, message, pasted, callback) {
+    if(!id || !message) {
+      return callback(_err('createMessage requires topic id and message text'));
+    }
+
+    var request = ['message=', message, '&',
+                   'pasted=', pasted || ''].join('');
+
+    _conn().get('/topics/' + id + '/messages/create', request, function(err, data) {
+      return _errorOrData(err, data, callback);
+    });
   }
 
-
+  
 };
 
 exports.Nodevore = Nodevore;
