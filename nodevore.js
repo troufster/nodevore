@@ -4,6 +4,7 @@ var Connector = connector.Connector;
 exports.setCredentials = connector.setCredentials;
 exports.setHost = connector.setHost;
 
+
 function _hasError(data) {
   if ( data.indexOf('error') > -1 ) {
     return true;
@@ -22,6 +23,18 @@ function _tryParse(data) {
   }
 
   return ret;
+}
+
+function _errorOrData(err, data, callback) {
+  if(err) {
+    return callback(err);
+  }
+
+  if(_hasError(data)) {
+    return callback(_tryParse(data));
+  }
+
+  return callback(null, _tryParse(data));
 }
 
 function _conn() {
@@ -44,77 +57,33 @@ Nodevore.prototype = {
   
   verifyAccount : function(callback) { 
     _conn().get('/account/verify','', function(err, data) {
-   
-      if(err) {
-        return callback(err);   
-      }
-      
-      if(_hasError(data)) {
-        return callback(_tryParse(data));
-      } 
-
-      callback(null, _tryParse(data));
+      return _errorOrData(err, data, callback);
     });
   },
 
   getOnline : function(callback) {
     _conn().get('/account/online','', function(err, data) {
-    
-      if(err){
-        return callback(err);
-      }
-
-      if(_hasError(data)) {
-        return callback(_tryParse(data));
-      }
-
-      callback(null, _tryParse(data));
+      return _errorOrData(err, data, callback); 
     });
   },
 
   markAllRead : function(callback) {
     _conn().get('/account/mark_read','', function(err, data) {
-    
-      if(err) {
-        return callback(err);
-      }
-     
-      if(_hasError(data)) {
-        return callback(_tryParse(data));
-      } 
-
-      callback(null, _tryParse(data));
+      return _errorOrData(err, data, callback);
     });
   },
 
   getAllGroups : function(callback) {
     _conn().get('/groups','', function(err, data) {
-    
-      if(err) {
-        return callback(err);
-      }
-      
-      if(_hasError(data)) {
-        return callback(_tryParse(data));
-      }
-
-      callback(null, _tryParse(data));
+      return _errorOrData(err, data, callback);
     });
   },
 
   getMentions : function(callback) {
     _conn().get('/account/mentions','', function(err, data) {
-    
-      if(err) {
-        return callback(err);
-      }
-      
-      if(_hasError(data)) {
-        return callback(_tryParse(data));
-      }
-
-      callback(null, _tryParse(data));
+      return _errorOrData(err, data, callback);
     });
+
   },
 
   createGroup : function(data, callback) {
@@ -134,23 +103,42 @@ Nodevore.prototype = {
                   ].join('');
     
     _conn().post('/groups/create', request, function(err, data) {
-      if(err) {
-        return callback(err);
-      }
-      
-      callback(data);
+      return _errorOrData(err, data, callback);
     });
   
   },
 
   getGroup : function(id, callback) {
     if(!id) {
-      return callback('getGroup requires a group id');
+      return callback(_err('getGroup requires a group id'));
+    }
+    
+    _conn().get('/groups/' + id, '', function(err, data) {
+      return _errorOrData(err, data, callback); 
+    }); 
+  },
+
+  getGroupMembers : function(id, filter,  callback) {
+    if(!id) {
+      return callback(_err('getGroupMembers requires a group id'));
+    }
+    
+    var request = filter ? 'filter=' + filter : '';
+
+    _conn().get('/groups/' + id + '/members', request, function(err, data) {
+      return _errorOrData(err, data, callback);
+    }); 
+  },
+
+  joinGroup : function(id, callback) {
+    if(!id) {
+      return callback(_err('joinGroup requires a group id'));
     }
 
-    
+    _conn().get('/groups/' + id + '/join', '', function(err, data) {
+      return _errorOrData(err, data, callback);
+    });
   }
-
 
 
 
