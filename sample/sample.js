@@ -2,7 +2,17 @@ var Nodevore = require('../nodevore').Nodevore;
 
 
 var n = new Nodevore('username', 'password');
+
 /*
+n.markRead(function(err, data) {
+  console.log(err, data);
+});
+
+n.getGroup({ groupid: 10151 }, function(err,data){
+  console.log(err, data);
+});
+
+
 n.verifyAccount(function(err, data) {
   console.log(err,data);
 });
@@ -20,9 +30,8 @@ n.getAllGroups(function(err, data) {
 n.getMentions(function(err, data) {
 });
 
-
 n.createGroup({ 
-                name : 'grpname', 
+                name : 'Ygrpname', 
                 kind : 'private',
                 description : 'grpdesc',
                 slug : 'grpslug'
@@ -32,10 +41,7 @@ n.createGroup({
               });
 
 
-n.getGroup(10151, function(err, data) {
-});
-
-n.getGroupMembers(10151, 'admin', function(err, data) {
-});
 */
-
+n.trackGroup({ id : 10151 }, function(err, data) {
+  console.log(err, data);
+});
