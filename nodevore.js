@@ -83,10 +83,10 @@ function _errorOrData(err, data, callback) {
  * @param {String} pass Convore password
  * @constructor
  */
-function Nodevore(user, pass) {
+function Nodevore(creds) {
   
-  if(user && pass) {
-    connector.setCredentials(user, pass);
+  if(creds.username && creds.password) {
+    connector.setCredentials(creds.username, creds.password);
   }
 
 };
@@ -114,6 +114,7 @@ for(var m in methods) {
 
     //Attach to proto
     Nodevore.prototype[m] = (function(innermethod, innerm) {
+
       return function(data, callback) {
         var _callback = callback ? callback : data;
         var queryparams = [];

@@ -6,4 +6,4 @@
 
 ##Usage
 
-  refer to sample/sample.js for an example of how to use nodevore
+  refer to test/ for an example of how to use nodevore
