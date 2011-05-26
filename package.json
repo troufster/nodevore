@@ -1,0 +1,8 @@
+{
+  "name" : "nodevore",
+  "version" : "0.0.1",
+  "description" : "Convore API wrapper",
+  "author" : "Stefan Pataky <stefan.pataky@gmail.com>",
+  "repository" : "git://github.com/troufster/nodevore",
+  "main" : "./nodevore"
+}
