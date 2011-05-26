@@ -4,6 +4,10 @@
 
 ##Usage
 
+###Installation
+
+`$ npm install nodevore`
+
 ###Getting started
 ```javascript
   var Nodevore = require('nodevore').Nodevore;
