@@ -158,4 +158,8 @@ for(var m in methods) {
   }
 }
 
+Nodevore.prototype.hangup = function() {
+  connector.liveStream(false);
+}
+
 exports.Nodevore = Nodevore;

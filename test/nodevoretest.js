@@ -101,5 +101,18 @@ module.exports = {
     n.trackGroup({ id : grpid }, function(err, data) {
       assert.ok(data);    
     });
+  },
+  live : function() {
+    var n = t();
+
+    var num = 0;
+
+    n.live(function(err,data) {
+      num++;
+      console.log(err, data);
+
+        setTimeout(n.hangup, 300);
+    });
+  
   }
 };
